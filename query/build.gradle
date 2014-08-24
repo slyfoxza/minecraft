@@ -1,0 +1,68 @@
+/*
+ * Copyright 2014 Philip Cronje
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ */
+description = 'Minecraft query protocol library'
+version = '1.0.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+
+sourceCompatibility = '1.7'
+targetCompatibility = '1.7'
+
+dependencies {
+	compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.7'
+}
+
+publishing {
+	publications {
+		maven(MavenPublication) {
+			artifactId 'minecraft-query'
+
+			from components.java
+
+			pom.withXml {
+				asNode().children().last() + {
+					resolveStrategy = Closure.DELEGATE_FIRST
+
+					name description
+					inceptionYear '2014'
+
+					licenses {
+						license {
+							name 'The Apache Software License, Version 2.0'
+							url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+							distribution 'repo'
+						}
+					}
+
+					developers {
+						developer {
+							id 'philipcronje'
+							name 'Philip Cronje'
+							timezone '+2'
+						}
+					}
+				}
+
+				// Fix compile dependencies added to POM as runtime
+				def badRuntimeDependencies = asNode().dependencies.'*'.findAll() {
+					it.scope.text() == 'runtime' && configurations.compile.allDependencies.find {
+						dep -> dep; dep.name == it.artifactId.text()
+					}
+				}
+				badRuntimeDependencies.each { it.scope*.value = 'compile' }
+			}
+		}
+	}
+}
