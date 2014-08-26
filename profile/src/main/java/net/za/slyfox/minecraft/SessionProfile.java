@@ -11,5 +11,25 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-include 'profile', 'profile-cli', 'query', 'query-cli'
+package net.za.slyfox.minecraft;
 
+import java.net.URI;
+
+public class SessionProfile {
+
+	public URI capeTextureUri;
+	public String name;
+	public URI skinTextureUri;
+	public String uuid;
+
+	@Override
+	public String toString() {
+
+		return getClass().getSimpleName() + '['
+				+ "uuid=" + uuid
+				+ ", name=" + name
+				+ ", skinTextureUri=" + skinTextureUri
+				+ ", capeTextureUri=" + capeTextureUri
+				+ ']';
+	}
+}

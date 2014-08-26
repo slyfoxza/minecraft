@@ -11,5 +11,23 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-include 'profile', 'profile-cli', 'query', 'query-cli'
+package net.za.slyfox.minecraft;
 
+public class Profile {
+
+	public Boolean isDemo;
+	public Boolean isLegacy;
+	public String name;
+	public String uuid;
+
+	@Override
+	public String toString() {
+
+		return getClass().getSimpleName() + '['
+				+ "uuid=" + uuid
+				+ ", name=" + name
+				+ ", isDemo=" + isDemo
+				+ ", isLegacy=" + isLegacy
+				+ ']';
+	}
+}
