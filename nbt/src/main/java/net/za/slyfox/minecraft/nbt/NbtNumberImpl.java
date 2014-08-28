@@ -11,6 +11,32 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-include 'lsnbt', 'nbt', 'nbt-api'
-include 'profile', 'profile-cli', 'profile-jaxrs', 'profile-spring'
-include 'query', 'query-cli'
+package net.za.slyfox.minecraft.nbt;
+
+public class NbtNumberImpl extends NbtValueImpl implements NbtNumber {
+
+	private final Number value;
+
+	NbtNumberImpl(Number value) {
+
+		this(null, value);
+	}
+
+	NbtNumberImpl(String name, Number value) {
+
+		super(name);
+		this.value = value;
+	}
+
+	@Override
+	public float floatValue() {
+
+		return value.floatValue();
+	}
+
+	@Override
+	public Number getNumber() {
+
+		return value;
+	}
+}

@@ -11,6 +11,21 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-include 'lsnbt', 'nbt', 'nbt-api'
-include 'profile', 'profile-cli', 'profile-jaxrs', 'profile-spring'
-include 'query', 'query-cli'
+package net.za.slyfox.minecraft.nbt;
+
+class NbtByteArrayImpl extends NbtValueImpl implements NbtByteArray {
+
+	private final byte[] array;
+
+	NbtByteArrayImpl(String name, byte[] array) {
+
+		super(name);
+		this.array = array;
+	}
+
+	@Override
+	public byte[] getArray() {
+
+		return array;
+	}
+}

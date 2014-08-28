@@ -11,6 +11,22 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-include 'lsnbt', 'nbt', 'nbt-api'
-include 'profile', 'profile-cli', 'profile-jaxrs', 'profile-spring'
-include 'query', 'query-cli'
+package net.za.slyfox.minecraft.nbt;
+
+import java.util.ArrayList;
+
+class NbtListImpl<T extends NbtValue> extends ArrayList<T> implements NbtList<T> {
+
+	private final String name;
+
+	NbtListImpl(String name) {
+
+		this.name = name;
+	}
+
+	@Override
+	public String getName() {
+
+		return name;
+	}
+}

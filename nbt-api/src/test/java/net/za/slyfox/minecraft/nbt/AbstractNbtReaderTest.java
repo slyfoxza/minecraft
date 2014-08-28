@@ -11,6 +11,11 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-include 'lsnbt', 'nbt', 'nbt-api'
-include 'profile', 'profile-cli', 'profile-jaxrs', 'profile-spring'
-include 'query', 'query-cli'
+package net.za.slyfox.minecraft.nbt;
+
+import java.io.InputStream;
+
+public abstract class AbstractNbtReaderTest {
+
+	protected abstract NbtReader createReader(InputStream inputStream);
+}

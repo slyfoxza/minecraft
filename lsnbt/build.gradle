@@ -11,6 +11,14 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-include 'lsnbt', 'nbt', 'nbt-api'
-include 'profile', 'profile-cli', 'profile-jaxrs', 'profile-spring'
-include 'query', 'query-cli'
+apply plugin: 'groovy'
+
+dependencies {
+	compile project(':nbt-api')
+	compile group: 'commons-cli', name: 'commons-cli', version: '1.2'
+	compile group: 'org.codehaus.groovy', name: 'groovy', version: '2.3.6'
+	compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.7'
+
+	runtime project(':nbt')
+	runtime group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.7'
+}

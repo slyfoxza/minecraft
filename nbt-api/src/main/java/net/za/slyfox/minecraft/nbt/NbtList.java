@@ -11,6 +11,10 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-include 'lsnbt', 'nbt', 'nbt-api'
-include 'profile', 'profile-cli', 'profile-jaxrs', 'profile-spring'
-include 'query', 'query-cli'
+package net.za.slyfox.minecraft.nbt;
+
+import java.util.List;
+
+public interface NbtList<T extends NbtValue> extends List<T>, NbtValue {
+
+}

@@ -11,6 +11,14 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-include 'lsnbt', 'nbt', 'nbt-api'
-include 'profile', 'profile-cli', 'profile-jaxrs', 'profile-spring'
-include 'query', 'query-cli'
+apply plugin: 'java'
+
+sourceCompatibility = '1.7'
+targetCompatibility = '1.7'
+
+dependencies {
+	compile project(':nbt-api')
+	compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.7'
+
+	testRuntime group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.7'
+}

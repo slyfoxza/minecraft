@@ -11,6 +11,38 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-include 'lsnbt', 'nbt', 'nbt-api'
-include 'profile', 'profile-cli', 'profile-jaxrs', 'profile-spring'
-include 'query', 'query-cli'
+package net.za.slyfox.minecraft.nbt.stream;
+
+public enum NbtTagType {
+
+	END(0),
+	BYTE(1),
+	SHORT(2),
+	INT(3),
+	LONG(4),
+	FLOAT(5),
+	DOUBLE(6),
+	BYTE_ARRAY(7),
+	STRING(8),
+	LIST(9),
+	COMPOUND(10),
+	INT_ARRAY(11);
+
+	public final byte id;
+
+	private NbtTagType(int id) {
+
+		this.id = (byte)id;
+	}
+
+	public static NbtTagType valueOf(byte id) {
+
+		for(NbtTagType value: values()) {
+			if(value.id == id) {
+				return value;
+			}
+		}
+		throw new IllegalArgumentException("No tag type corresponding to 0x"
+				+ Integer.toHexString(id));
+	}
+}

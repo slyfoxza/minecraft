@@ -11,6 +11,13 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-include 'lsnbt', 'nbt', 'nbt-api'
-include 'profile', 'profile-cli', 'profile-jaxrs', 'profile-spring'
-include 'query', 'query-cli'
+package net.za.slyfox.minecraft.nbt;
+
+import java.util.Map;
+
+public interface NbtCompound extends NbtValue, Map<String, NbtValue> {
+
+	NbtCompound getCompound(String name);
+	float getFloat(String name);
+	String getString(String name);
+}
