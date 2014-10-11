@@ -96,7 +96,8 @@ public class DatagramMinecraftQueryClient implements MinecraftQueryClient {
 			DatagramPacketFactory<QueryContext> queryPacketFactory,
 			ResponseHandler<T> responseHandler) throws IOException {
 
-		try(DatagramSocket socket = new DatagramSocket()) {
+		DatagramSocket socket = new DatagramSocket();
+		try {
 			socket.setSoTimeout(2000);
 			socket.connect(address);
 
@@ -115,6 +116,8 @@ public class DatagramMinecraftQueryClient implements MinecraftQueryClient {
 			socket.send(packet);
 			packet = receive(socket, QUERY_TYPE);
 			return responseHandler.handle(packet);
+		} finally {
+			socket.close();
 		}
 	}
 
@@ -298,7 +301,7 @@ public class DatagramMinecraftQueryClient implements MinecraftQueryClient {
 		private static final Map<String, Field> mapping;
 
 		static {
-			mapping = new HashMap<>();
+			mapping = new HashMap<String, Field>();
 			try {
 				mapping.put("game_id", FullStatus.class.getField("gameID"));
 				mapping.put("gametype", FullStatus.class.getField("gameType"));

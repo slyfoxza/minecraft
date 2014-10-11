@@ -25,8 +25,8 @@ public class FullStatus extends BasicStatus {
 	public String plugins;
 	public String version;
 
-	public final Map<String, String> additionalStatus = new HashMap<>();
-	public final List<String> onlinePlayers = new ArrayList<>();
+	public final Map<String, String> additionalStatus = new HashMap<String, String>();
+	public final List<String> onlinePlayers = new ArrayList<String>();
 
 	@Override
 	public String toString() {

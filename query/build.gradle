@@ -14,11 +14,7 @@
 description = 'Minecraft query protocol library'
 version = '1.0.0-SNAPSHOT'
 
-apply plugin: 'java'
 apply plugin: 'maven-publish'
-
-sourceCompatibility = '1.7'
-targetCompatibility = '1.7'
 
 dependencies {
 	compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.7'
@@ -38,21 +34,8 @@ publishing {
 					name description
 					inceptionYear '2014'
 
-					licenses {
-						license {
-							name 'The Apache Software License, Version 2.0'
-							url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-							distribution 'repo'
-						}
-					}
-
-					developers {
-						developer {
-							id 'philipcronje'
-							name 'Philip Cronje'
-							timezone '+2'
-						}
-					}
+					licenses pomLicenses
+					developers pomDevelopers
 				}
 
 				PomUtils.fixCompileDependencies(it, configurations)
