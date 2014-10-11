@@ -15,10 +15,12 @@ apply plugin: 'groovy'
 
 dependencies {
 	compile project(':profile-jaxrs')
+	compile project(':profile-spring')
 	compile group: 'commons-cli', name: 'commons-cli', version: '1.2'
 	compile group: 'org.codehaus.groovy', name: 'groovy', version: '2.3.6'
 	compile group: 'org.glassfish.jersey.core', name: 'jersey-client', version: '2.11'
 
+	runtime group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.4.3'
 	runtime group: 'org.glassfish', name: 'javax.json', version: '1.0.4'
 	runtime group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.7'
 	runtime group: 'org.slf4j', name: 'jul-to-slf4j', version: '1.7.7'

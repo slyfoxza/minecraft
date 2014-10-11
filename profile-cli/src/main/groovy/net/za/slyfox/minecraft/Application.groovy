@@ -26,10 +26,31 @@ class Application {
 		CliBuilder cliBuilder = new CliBuilder(
 				usage: 'profile-cli [options] [uuid or profile names]'
 		)
+		cliBuilder.i(args: 1, 'implementation')
 		cliBuilder.r('performs UUID to profile mapping')
 		def options = cliBuilder.parse(arguments)
 
-		ProfileClient client = new JaxRsProfileClient().with {
+		ProfileClient client = null
+		switch(options.i) {
+			case 'jaxrs':
+				client = createJaxRsProfileClient()
+				break;
+			case 'spring':
+				client = createRestTemplateProfileClient()
+				break;
+		}
+
+		if(options.r) {
+			println client.retrieveProfileForUuid(options.arguments().first())
+		} else {
+			println client.retrieveProfilesForNames(options.arguments().toArray(
+					new String[options.arguments().size()]))
+		}
+	}
+
+	private static createJaxRsProfileClient() {
+
+		return new JaxRsProfileClient().with {
 			def jsonGeneratorFactory = Json.createGeneratorFactory(null)
 			def jsonReaderFactory = Json.createReaderFactory(null)
 
@@ -41,12 +62,10 @@ class Application {
 					.build()
 			return it
 		}
+	}
 
-		if(options.r) {
-			println client.retrieveProfileForUuid(options.arguments().first())
-		} else {
-			println client.retrieveProfilesForNames(options.arguments().toArray(
-					new String[options.arguments().size()]))
-		}
+	private static createRestTemplateProfileClient() {
+
+		return new RestTemplateProfileClient();
 	}
 }

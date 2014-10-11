@@ -97,10 +97,10 @@ public class ProfileListMessageBodyReader implements MessageBodyReader<List<Prof
 
 			JsonObject jsonProfile = (JsonObject)value;
 			Profile profile = new Profile();
-			profile.uuid = jsonProfile.getString("id");
+			profile.id = jsonProfile.getString("id");
 			profile.name = jsonProfile.getString("name");
-			profile.isLegacy = jsonProfile.getBoolean("legacy", false);
-			profile.isDemo = jsonProfile.getBoolean("demo", false);
+			profile.legacy = jsonProfile.getBoolean("legacy", false);
+			profile.demo = jsonProfile.getBoolean("demo", false);
 			profiles.add(profile);
 		}
 

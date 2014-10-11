@@ -15,19 +15,19 @@ package net.za.slyfox.minecraft;
 
 public class Profile {
 
-	public Boolean isDemo;
-	public Boolean isLegacy;
+	public Boolean demo;
+	public String id;
+	public Boolean legacy;
 	public String name;
-	public String uuid;
 
 	@Override
 	public String toString() {
 
 		return getClass().getSimpleName() + '['
-				+ "uuid=" + uuid
+				+ "id=" + id
 				+ ", name=" + name
-				+ ", isDemo=" + isDemo
-				+ ", isLegacy=" + isLegacy
+				+ ", demo=" + demo
+				+ ", legacy=" + legacy
 				+ ']';
 	}
 }
