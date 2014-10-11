@@ -14,10 +14,6 @@
 package net.za.slyfox.minecraft;
 
 import java.io.IOException;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
@@ -28,13 +24,10 @@ import javax.ws.rs.core.UriBuilder;
 /**
  * Mojang Profile API client implementation based on the JAX-RS Client API.
  */
-public class JaxRsProfileClient implements ProfileClient {
+public class JaxRsProfileClient extends AbstractProfileClient {
 
-	private static final GenericType<List<Profile>> PROFILE_LIST_TYPE
-			= new GenericType<List<Profile>>() { };
-	private static final URI PROFILES_URI = URI.create("https://api.mojang.com/profiles/minecraft");
-	private static final UriBuilder sessionProfileUriBuilder
-			= UriBuilder.fromUri("https://sessionserver.mojang.com/session/minecraft/profile/{uuid}");
+	private static final GenericType<List<Profile>> PROFILE_LIST_TYPE = new GenericType<List<Profile>>() { };
+	private static final UriBuilder sessionProfileUriBuilder = UriBuilder.fromUri(SESSION_PROFILE_URI_TEMPLATE);
 
 	private Client client;
 
@@ -58,26 +51,11 @@ public class JaxRsProfileClient implements ProfileClient {
 	}
 
 	@Override
-	public List<Profile> retrieveProfilesForNames(String... profileNames) throws IOException {
+	protected List<Profile> doRetrieveProfilesForNames(String[] profileNames) {
 
-		if(profileNames.length == 0) {
-			return Collections.emptyList();
-		}
-
-		List<Profile> profiles = new ArrayList<>(profileNames.length);
-		// Execute requests in blocks of up to 100 to adhere to the server-side per-request limit
-		int from = 0;
-		while(from < profileNames.length) {
-			int to = Math.min(profileNames.length, from + 100);
-			String[] requestProfileNames = Arrays.copyOfRange(profileNames, from, to);
-			List<Profile> responseProfiles = client.target(PROFILES_URI)
-					.request(MediaType.APPLICATION_JSON_TYPE)
-					.post(Entity.json(requestProfileNames), PROFILE_LIST_TYPE);
-			// Add all results for this iteration to the final result list
-			profiles.addAll(responseProfiles);
-			from = to;
-		}
-		return profiles;
+		return client.target(PROFILES_URI)
+				.request(MediaType.APPLICATION_JSON_TYPE)
+				.post(Entity.json(profileNames), PROFILE_LIST_TYPE);
 	}
 
 	@Override

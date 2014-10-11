@@ -129,7 +129,9 @@ public class SessionProfileMessageBodyReader implements MessageBodyReader<Sessio
 			}
 			return sessionProfile;
 
-		} catch(ClassCastException | NullPointerException e) {
+		} catch(ClassCastException e) {
+			throw new ProcessingException("Failed to read session profile from response", e);
+		} catch(NullPointerException e) {
 			throw new ProcessingException("Failed to read session profile from response", e);
 		}
 	}

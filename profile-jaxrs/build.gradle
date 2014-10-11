@@ -11,15 +11,14 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-apply plugin: 'groovy'
+description = 'JAX-RS Mojang profile API client implementation'
+version = '1.0.0-SNAPSHOT'
 
 dependencies {
-	compile project(':profile-jaxrs')
-	compile group: 'commons-cli', name: 'commons-cli', version: '1.2'
-	compile group: 'org.codehaus.groovy', name: 'groovy', version: '2.3.6'
-	compile group: 'org.glassfish.jersey.core', name: 'jersey-client', version: '2.11'
+	compile project(':profile')
+	compile group: 'commons-codec', name: 'commons-codec', version: '1.9'
+	compile group: 'javax.json', name: 'javax.json-api', version: '1.0'
+	compile group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: '2.0'
 
-	runtime group: 'org.glassfish', name: 'javax.json', version: '1.0.4'
-	runtime group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.7'
-	runtime group: 'org.slf4j', name: 'jul-to-slf4j', version: '1.7.7'
+	testRuntime group: 'org.glassfish', name: 'javax.json', version: '1.0.4'
 }

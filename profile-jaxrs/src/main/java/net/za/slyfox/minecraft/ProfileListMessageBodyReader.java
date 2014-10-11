@@ -89,7 +89,7 @@ public class ProfileListMessageBodyReader implements MessageBodyReader<List<Prof
 
 		JsonReader jsonReader = jsonReaderFactory.createReader(entityStream);
 		JsonArray jsonProfiles = jsonReader.readArray();
-		List<Profile> profiles = new LinkedList<>();
+		List<Profile> profiles = new LinkedList<Profile>();
 		for(JsonValue value: jsonProfiles) {
 			if(value.getValueType() != ValueType.OBJECT) {
 				continue;
