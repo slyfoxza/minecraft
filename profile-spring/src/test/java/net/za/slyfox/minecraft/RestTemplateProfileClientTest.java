@@ -16,10 +16,12 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.net.URI;
+import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -32,10 +34,12 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRule;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 public class RestTemplateProfileClientTest {
@@ -76,7 +80,7 @@ public class RestTemplateProfileClientTest {
 	}
 
 	@Test
-	public void retrieveProfileForUuid() throws Exception {
+	public void retrieveProfileForUuid_withSuccessfulResponse() throws Exception {
 
 		SessionProfile sessionProfile = new SessionProfile();
 		when(restTemplate.getForObject("https://sessionserver.mojang.com/session/minecraft/profile/{uuid}",
@@ -85,5 +89,19 @@ public class RestTemplateProfileClientTest {
 		SessionProfile result = profileClient.retrieveProfileForUuid(DEFAULT_UUID_STRING);
 
 		assertThat(result, is(sameInstance(sessionProfile)));
+	}
+
+	@Test(expected = RateLimitedException.class)
+	public void retrieveProfileForUuid_withRateLimitedResponse() throws Exception {
+
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+		String responseBodyString = "{\"error\":\"TooManyRequestsException\","
+				+ "\"errorMessage\":\"The client has sent too many requests within a certain amount of time\"}";
+		when(restTemplate.getForObject(anyString(), any(Class.class), any(String.class)))
+				.thenThrow(new HttpClientErrorException(HttpStatus.TOO_MANY_REQUESTS, "Too Many Requests",
+						responseHeaders, responseBodyString.getBytes("UTF-8"), Charset.forName("UTF-8")));
+
+		profileClient.retrieveProfileForUuid(DEFAULT_UUID_STRING);
 	}
 }

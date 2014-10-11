@@ -15,10 +15,12 @@ package net.za.slyfox.minecraft;
 
 import java.io.IOException;
 import java.util.List;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
 /**
@@ -59,11 +61,19 @@ public class JaxRsProfileClient extends AbstractProfileClient {
 	}
 
 	@Override
-	public SessionProfile retrieveProfileForUuid(String uuid) throws IOException {
+	public SessionProfile retrieveProfileForUuid(String uuid) throws IOException, RateLimitedException {
 
-		return client.target(sessionProfileUriBuilder.build(uuid))
-				.request(MediaType.APPLICATION_JSON_TYPE)
-				.get(SessionProfile.class);
+		try {
+			return client.target(sessionProfileUriBuilder.build(uuid))
+					.request(MediaType.APPLICATION_JSON_TYPE)
+					.get(SessionProfile.class);
+		} catch(WebApplicationException e) {
+			Response response = e.getResponse();
+			if(response.getStatus() != 429) {
+				throw e;
+			}
+			throw new RateLimitedException();
+		}
 	}
 
 	/**

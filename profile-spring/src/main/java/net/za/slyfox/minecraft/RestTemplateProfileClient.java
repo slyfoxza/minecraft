@@ -21,9 +21,11 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ClassUtils;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -78,9 +80,16 @@ public class RestTemplateProfileClient extends AbstractProfileClient {
 	}
 
 	@Override
-	public SessionProfile retrieveProfileForUuid(String uuid) throws IOException {
+	public SessionProfile retrieveProfileForUuid(String uuid) throws IOException, RateLimitedException {
 
-		return restTemplate.getForObject(SESSION_PROFILE_URI_TEMPLATE, SessionProfile.class, uuid);
+		try {
+			return restTemplate.getForObject(SESSION_PROFILE_URI_TEMPLATE, SessionProfile.class, uuid);
+		} catch(HttpClientErrorException e) {
+			if(e.getStatusCode() != HttpStatus.TOO_MANY_REQUESTS) {
+				throw e;
+			}
+			throw new RateLimitedException();
+		}
 	}
 
 	/**

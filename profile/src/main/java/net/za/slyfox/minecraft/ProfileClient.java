@@ -28,9 +28,11 @@ public interface ProfileClient {
 	 * per-request profile limit.</p>
 	 *
 	 * @param profileNames the list of profile names to map to UUIDs
-	 * @return a map of the given profile names to the corresponding profile information. Invalid or
-	 *         non-existent profile names will not be contained in the returned map
+	 * @return a list of profile data structures. Invalid or non-existent profile names will not have a corresponding
+	 *         entry in this list
 	 * @throws IOException when an I/O error occurs
+	 * @throws RuntimeException when an error occurs that the implementation cannot meaningfully map to an {@code
+	 *         IOException}
 	 */
 	List<Profile> retrieveProfilesForNames(String... profileNames) throws IOException;
 
@@ -41,7 +43,7 @@ public interface ProfileClient {
 	 * @return profile information for the given UUID. If an empty response is received, {@code
 	 *         null} will be returned
 	 * @throws IOException when an I/O error occurs
+	 * @throws RateLimitedException when the remote service indicates that the client has been rate limited
 	 */
-	// TODO: Explicitly handle rate limiting response in interface
-	SessionProfile retrieveProfileForUuid(String uuid) throws IOException;
+	SessionProfile retrieveProfileForUuid(String uuid) throws IOException, RateLimitedException;
 }
