@@ -33,4 +33,23 @@ abstract class PomUtils {
 		}
 		dependencies.each { it.scope*.value = 'compile' }
 	}
+
+	/**
+	 * Fixes dependencies that should be added to the POM with an optional value of {@code true}.
+	 *
+	 * @param pom the object returned by {@code pom.withXml}
+	 * @param configurations the configurations property of the project
+	 */
+	static void fixOptionalDependencies(pom, configurations) {
+
+		def dependencies = pom.asNode().dependencies.'*'.findAll() {
+			configurations.optional.allDependencies.find { dep -> dep.name == it.artifactId.text() }
+		}
+		dependencies.each {
+			it.children().last() + {
+				resolveStrategy = DELEGATE_FIRST
+				optional true
+			}
+		}
+	}
 }

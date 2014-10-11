@@ -14,11 +14,38 @@
 description = 'JAX-RS Mojang profile API client implementation'
 version = '1.0.0-SNAPSHOT'
 
+apply plugin: 'maven-publish'
+
 dependencies {
+	// FIXME: The profile module is output to the POM with a scope of runtime
 	compile project(':profile')
 	compile group: 'commons-codec', name: 'commons-codec', version: '1.9'
 	compile group: 'javax.json', name: 'javax.json-api', version: '1.0'
 	compile group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: '2.0'
 
 	testRuntime group: 'org.glassfish', name: 'javax.json', version: '1.0.4'
+}
+
+publishing {
+	publications {
+		maven(MavenPublication) {
+			artifactId 'minecraft-profile-jaxrs'
+
+			from components.java
+
+			pom.withXml {
+				asNode().children().last() + {
+					resolveStrategy = DELEGATE_FIRST
+
+					name description
+					inceptionYear '2014'
+
+					licenses pomLicenses
+					developers pomDevelopers
+				}
+
+				PomUtils.fixCompileDependencies(it, configurations)
+			}
+		}
+	}
 }

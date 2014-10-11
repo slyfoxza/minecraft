@@ -13,10 +13,36 @@
 description = 'Spring RestTemplate Mojang profile API client implementation'
 version = '1.0.0-SNAPSHOT'
 
+apply plugin: 'maven-publish'
 apply plugin: 'propdeps'
 
 dependencies {
 	compile project(':profile')
 	compile group: 'org.springframework', name: 'spring-web', version: '3.2.0.RELEASE'
 	optional group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.0.0'
+}
+
+publishing {
+	publications {
+		maven(MavenPublication) {
+			artifactId 'minecraft-profile-spring'
+
+			from components.java
+
+			pom.withXml {
+				asNode().children().last() + {
+					resolveStrategy = DELEGATE_FIRST
+
+					name description
+					inceptionYear '2014'
+
+					licenses pomLicenses
+					developers pomDevelopers
+				}
+
+				PomUtils.fixCompileDependencies(it, configurations)
+				PomUtils.fixOptionalDependencies(it, configurations)
+			}
+		}
+	}
 }
