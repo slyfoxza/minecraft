@@ -20,5 +20,7 @@ dependencies {
 	compile project(':nbt-api')
 	compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.7'
 
+	testCompile project(path: ':nbt-api', configuration: 'tests')
+
 	testRuntime group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.7'
 }

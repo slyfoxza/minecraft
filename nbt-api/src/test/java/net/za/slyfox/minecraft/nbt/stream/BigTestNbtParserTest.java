@@ -29,7 +29,7 @@ public abstract class BigTestNbtParserTest extends AbstractNbtParserTest {
 	public void parseNbt() throws IOException {
 
 		NbtParser parser = createParser(new GZIPInputStream(
-				BigTestNbtParserTest.class.getResourceAsStream("../bigtest.nbt")));
+				BigTestNbtParserTest.class.getResourceAsStream("/net/za/slyfox/minecraft/nbt/bigtest.nbt")));
 
 		assertThat(parser.next(), is(Event.TAG_ID));
 		assertThat(parser.getTagType(), is(NbtTagType.COMPOUND));

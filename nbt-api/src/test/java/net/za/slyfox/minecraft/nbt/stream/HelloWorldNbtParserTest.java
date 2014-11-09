@@ -26,7 +26,7 @@ public abstract class HelloWorldNbtParserTest extends AbstractNbtParserTest {
 	public void parseNbt() {
 
 		NbtParser parser = createParser(HelloWorldNbtParserTest.class.getResourceAsStream(
-				"../hello_world.nbt"));
+				"/net/za/slyfox/minecraft/nbt/hello_world.nbt"));
 
 		assertThat(parser.next(), is(Event.TAG_ID));
 		assertThat(parser.getTagType(), is(NbtTagType.COMPOUND));
