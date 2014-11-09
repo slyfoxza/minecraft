@@ -14,3 +14,4 @@
 include 'lsnbt', 'nbt', 'nbt-api'
 include 'profile', 'profile-cli', 'profile-jaxrs', 'profile-spring'
 include 'query', 'query-cli'
+include 'region', 'region-cli'
