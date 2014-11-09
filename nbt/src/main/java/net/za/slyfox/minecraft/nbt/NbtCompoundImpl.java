@@ -88,12 +88,6 @@ class NbtCompoundImpl extends NbtValueImpl implements NbtCompound {
 	}
 
 	@Override
-	public boolean remove(Object key, Object value) {
-
-		return values.remove(key, value);
-	}
-
-	@Override
 	public int size() {
 
 		return values.size();
