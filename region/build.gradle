@@ -10,7 +10,10 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-apply plugin: 'java'
+description = 'Minecraft region library'
+version = '1.0.0-SNAPSHOT'
+
+apply plugin: 'maven-publish'
 
 sourceCompatibility = '1.7'
 targetCompatibility = '1.7'
@@ -19,4 +22,28 @@ dependencies {
 	compile project(':nbt-api')
 	compile group: 'javax.inject', name: 'javax.inject', version: '1'
 	compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.7'
+}
+
+publishing {
+	publications {
+		maven(MavenPublication) {
+			artifactId 'minecraft-region'
+
+			from components.java
+
+			pom.withXml {
+				asNode().children().last() + {
+					resolveStrategy = DELEGATE_FIRST
+
+					name description
+					inceptionYear '2014'
+
+					licenses pomLicenses
+					developers pomDevelopers
+				}
+
+				PomUtils.fixCompileDependencies(it, configurations)
+			}
+		}
+	}
 }

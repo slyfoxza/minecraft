@@ -11,7 +11,10 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-apply plugin: 'java'
+description = 'Minecraft NBT implementation library'
+version = '1.0.0-SNAPSHOT'
+
+apply plugin: 'maven-publish'
 
 sourceCompatibility = '1.7'
 targetCompatibility = '1.7'
@@ -23,4 +26,28 @@ dependencies {
 	testCompile project(path: ':nbt-api', configuration: 'tests')
 
 	testRuntime group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.7'
+}
+
+publishing {
+	publications {
+		maven(MavenPublication) {
+			artifactId 'minecraft-nbt'
+
+			from components.java
+
+			pom.withXml {
+				asNode().children().last() + {
+					resolveStrategy = DELEGATE_FIRST
+
+					name description
+					inceptionYear '2014'
+
+					licenses pomLicenses
+					developers pomDevelopers
+				}
+
+				PomUtils.fixCompileDependencies(it, configurations)
+			}
+		}
+	}
 }
